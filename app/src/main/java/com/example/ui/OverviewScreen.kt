@@ -417,8 +417,8 @@ fun OverviewScreen(
                 item {
                     Card(
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = finColors.goldContainer),
-                        border = BorderStroke(1.dp, finColors.gold.copy(alpha = 0.55f)),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, finColors.skyBlue.copy(alpha = 0.45f)),
                         onClick = onNavigateToLoanSheet,
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -434,19 +434,19 @@ fun OverviewScreen(
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(finColors.gold.copy(alpha = 0.2f))
+                                    .background(finColors.skyBlueContainer)
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.Calculate,
                                     contentDescription = "Loan Disbursement Sheet",
-                                    tint = finColors.gold
+                                    tint = finColors.skyBlue
                                 )
                             }
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "Loan Disbursement Sheet & EMI Calc",
                                     style = MaterialTheme.typography.titleSmall,
-                                    color = finColors.gold
+                                    color = finColors.skyBlue
                                 )
                                 Text(
                                     text = buildString {
@@ -459,10 +459,10 @@ fun OverviewScreen(
                                         }
                                     },
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = Color(0xFFE2E8F0)
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            Text("Open", color = finColors.gold, style = MaterialTheme.typography.labelLarge)
+                            Text("Open", color = finColors.skyBlue, style = MaterialTheme.typography.labelLarge)
                         }
                     }
                 }

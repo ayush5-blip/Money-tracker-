@@ -186,14 +186,13 @@ fun LedgerAuthenticatedApp(
                     NavigationBar(containerColor = Color(0xFF07090D)) {
                         navTabs.forEach { tab ->
                             val selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
-                            val activeColor = if (tab.route == ROUTE_LOAN) finColors.gold else finColors.skyBlue
                             NavigationBarItem(
                                 selected = selected,
                                 onClick = { navigateToTab(tab.route) },
                                 colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = activeColor,
-                                    selectedTextColor = activeColor,
-                                    indicatorColor = if (tab.route == ROUTE_LOAN) finColors.goldContainer else finColors.skyBlueContainer,
+                                    selectedIconColor = finColors.skyBlue,
+                                    selectedTextColor = finColors.skyBlue,
+                                    indicatorColor = finColors.skyBlueContainer,
                                     unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                     unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 ),

@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +63,10 @@ private fun AppContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val authRepository = remember(context) { OfflineAuthRepository(context) }
+
+    LaunchedEffect(authRepository) {
+        authRepository.ensurePreviewAccountSeeded()
+    }
 
     val currentUser by authRepository.currentUserFlow.collectAsStateWithLifecycle(initialValue = null)
     val existingAccounts by authRepository.existingAccountsFlow.collectAsStateWithLifecycle(initialValue = emptyList())

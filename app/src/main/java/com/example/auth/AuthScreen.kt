@@ -212,11 +212,21 @@ fun AuthScreen(
                                 selected = username.equals(acc.username, ignoreCase = true),
                                 onClick = {
                                     username = acc.username
+                                    if (acc.username == OfflineAuthRepository.PREVIEW_USERNAME) {
+                                        password = OfflineAuthRepository.PREVIEW_PASSWORD
+                                    }
                                     errorMessage = null
                                 },
                                 label = { Text(acc.username) }
                             )
                         }
+                    }
+                    if (existingAccounts.any { it.username == OfflineAuthRepository.PREVIEW_USERNAME }) {
+                        Text(
+                            text = "Preview Test ID: ${OfflineAuthRepository.PREVIEW_USERNAME}  •  Password: ${OfflineAuthRepository.PREVIEW_PASSWORD}",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = finColors.skyBlue
+                        )
                     }
                 }
             }

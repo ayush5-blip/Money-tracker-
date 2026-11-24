@@ -188,10 +188,10 @@ fun LoanCalculatorScreen(
         LoanCalculatorEngine.computeSheet(currentInput)
     }
 
-    val goldTextColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = finColors.gold,
-        focusedLabelColor = finColors.gold,
-        cursorColor = finColors.gold,
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = finColors.skyBlue,
+        focusedLabelColor = finColors.skyBlue,
+        cursorColor = finColors.skyBlue,
         unfocusedBorderColor = finColors.border
     )
 
@@ -213,7 +213,7 @@ fun LoanCalculatorScreen(
                         text = "Loan Disbursement Sheet",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        color = finColors.gold
+                        color = finColors.skyBlue
                     )
                     Text(
                         text = "Offline calculator • Form & Printable PDF Sheet",
@@ -225,7 +225,7 @@ fun LoanCalculatorScreen(
                     Icon(
                         imageVector = Icons.Rounded.RestartAlt,
                         contentDescription = "New blank sheet",
-                        tint = finColors.gold
+                        tint = finColors.skyBlue
                     )
                 }
             }
@@ -237,7 +237,7 @@ fun LoanCalculatorScreen(
                     Text(
                         text = "Saved Offline Sheets (${savedSheets.size})",
                         style = MaterialTheme.typography.labelMedium,
-                        color = finColors.gold
+                        color = finColors.skyBlue
                     )
                     Row(
                         modifier = Modifier
@@ -265,8 +265,8 @@ fun LoanCalculatorScreen(
                                     )
                                 },
                                 colors = FilterChipDefaults.filterChipColors(
-                                    selectedContainerColor = finColors.goldContainer,
-                                    selectedLabelColor = finColors.gold
+                                    selectedContainerColor = finColors.skyBlueContainer,
+                                    selectedLabelColor = finColors.skyBlue
                                 )
                             )
                         }
@@ -284,8 +284,8 @@ fun LoanCalculatorScreen(
                         onClick = { viewMode = idx },
                         shape = SegmentedButtonDefaults.itemShape(idx, tabs.size),
                         colors = SegmentedButtonDefaults.colors(
-                            activeContainerColor = finColors.goldContainer,
-                            activeContentColor = finColors.gold
+                            activeContainerColor = finColors.skyBlueContainer,
+                            activeContentColor = finColors.skyBlue
                         ),
                         icon = {
                             Icon(
@@ -307,7 +307,7 @@ fun LoanCalculatorScreen(
                 Card(
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    border = BorderStroke(1.dp, finColors.gold.copy(alpha = 0.35f))
+                    border = BorderStroke(1.dp, finColors.border)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -316,7 +316,7 @@ fun LoanCalculatorScreen(
                         Text(
                             text = "Customer & Scheme",
                             style = MaterialTheme.typography.titleSmall,
-                            color = finColors.gold
+                            color = finColors.skyBlue
                         )
 
                         OutlinedTextField(
@@ -325,7 +325,7 @@ fun LoanCalculatorScreen(
                             label = { Text("Customer Name") },
                             placeholder = { Text("Enter full name") },
                             singleLine = true,
-                            colors = goldTextColors,
+                            colors = fieldColors,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .testTag("loan_customer_name_input")
@@ -339,8 +339,8 @@ fun LoanCalculatorScreen(
                                     onClick = { scheme = s },
                                     shape = SegmentedButtonDefaults.itemShape(idx, LoanScheme.entries.size),
                                     colors = SegmentedButtonDefaults.colors(
-                                        activeContainerColor = finColors.goldContainer,
-                                        activeContentColor = finColors.gold
+                                        activeContainerColor = finColors.skyBlueContainer,
+                                        activeContentColor = finColors.skyBlue
                                     ),
                                     label = { Text(s.code, fontWeight = FontWeight.Bold) },
                                     modifier = Modifier.testTag("scheme_${s.code}")
@@ -352,20 +352,20 @@ fun LoanCalculatorScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = laText,
                                 onValueChange = { laText = it },
                                 label = "LA (Loan Amount)",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("loan_la_input")
                             )
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = skText,
                                 onValueChange = { skText = it },
                                 label = "SK (Loan Insurance)",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("loan_sk_input")
@@ -393,7 +393,7 @@ fun LoanCalculatorScreen(
                             Text(
                                 text = "Bank Charges & Deductions",
                                 style = MaterialTheme.typography.titleSmall,
-                                color = finColors.gold
+                                color = finColors.skyBlue
                             )
                             Text(
                                 text = "Total: ${formatDoubleMoney(computed.bankCharges, currencyCode)}",
@@ -407,18 +407,18 @@ fun LoanCalculatorScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = pfText,
                                 onValueChange = { pfText = it },
                                 label = "PF",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = rtoText,
                                 onValueChange = { rtoText = it },
                                 label = "RTO",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -427,18 +427,18 @@ fun LoanCalculatorScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = stpText,
                                 onValueChange = { stpText = it },
                                 label = "STP",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = vcText,
                                 onValueChange = { vcText = it },
                                 label = "VC",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -448,21 +448,21 @@ fun LoanCalculatorScreen(
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             if (scheme != LoanScheme.P) {
-                                NumericGoldField(
+                                NumericLoanField(
                                     value = fcText,
                                     onValueChange = { fcText = it },
                                     label = "FORCLOSE (FC)",
-                                    colors = goldTextColors,
+                                    colors = fieldColors,
                                     modifier = Modifier
                                         .weight(1f)
                                         .testTag("loan_fc_input")
                                 )
                             }
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = rtoCashText,
                                 onValueChange = { rtoCashText = it },
                                 label = "RTO Cash",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -470,13 +470,13 @@ fun LoanCalculatorScreen(
                         if (scheme == LoanScheme.BT) {
                             Surface(
                                 shape = RoundedCornerShape(10.dp),
-                                color = finColors.goldContainer,
+                                color = finColors.skyBlueContainer,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
                                     text = "BT Scheme: 10% NOC Hold (${formatDoubleMoney(computed.nocHold, currencyCode)}) applied automatically.",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = finColors.gold,
+                                    color = finColors.skyBlue,
                                     modifier = Modifier.padding(10.dp)
                                 )
                             }
@@ -498,18 +498,18 @@ fun LoanCalculatorScreen(
                         Text(
                             text = "Rate, Tenure & Disbursement Date",
                             style = MaterialTheme.typography.titleSmall,
-                            color = finColors.gold
+                            color = finColors.skyBlue
                         )
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            NumericGoldField(
+                            NumericLoanField(
                                 value = reducingRateText,
                                 onValueChange = { reducingRateText = it },
                                 label = "Reducing Rate (IT %)",
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("loan_rate_input")
@@ -520,7 +520,7 @@ fun LoanCalculatorScreen(
                                 label = { Text("Tenure (Months)") },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("loan_tenure_input")
@@ -530,13 +530,13 @@ fun LoanCalculatorScreen(
                         OutlinedButton(
                             onClick = { showDatePicker = true },
                             shape = RoundedCornerShape(14.dp),
-                            border = BorderStroke(1.dp, finColors.gold.copy(alpha = 0.5f)),
+                            border = BorderStroke(1.dp, finColors.skyBlue.copy(alpha = 0.5f)),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.CalendarMonth,
                                 contentDescription = null,
-                                tint = finColors.gold
+                                tint = finColors.skyBlue
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
@@ -561,7 +561,7 @@ fun LoanCalculatorScreen(
                         Text(
                             text = "Document Checklist",
                             style = MaterialTheme.typography.titleSmall,
-                            color = finColors.gold
+                            color = finColors.skyBlue
                         )
 
                         Row(
@@ -573,7 +573,7 @@ fun LoanCalculatorScreen(
                                 selected = rcCollect.label,
                                 options = DocCollectStatus.entries.map { it.label },
                                 onSelect = { rcCollect = DocCollectStatus.fromRaw(it) },
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                             DropdownField(
@@ -581,7 +581,7 @@ fun LoanCalculatorScreen(
                                 selected = insurancePuc.label,
                                 options = DocCollectStatus.entries.map { it.label },
                                 onSelect = { insurancePuc = DocCollectStatus.fromRaw(it) },
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -595,7 +595,7 @@ fun LoanCalculatorScreen(
                                 selected = lightBill.label,
                                 options = DocCollectStatus.entries.map { it.label },
                                 onSelect = { lightBill = DocCollectStatus.fromRaw(it) },
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                             DropdownField(
@@ -603,7 +603,7 @@ fun LoanCalculatorScreen(
                                 selected = cheques,
                                 options = ChequeOptions.all,
                                 onSelect = { cheques = it },
-                                colors = goldTextColors,
+                                colors = fieldColors,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -615,8 +615,8 @@ fun LoanCalculatorScreen(
                 // Live Preview & Actions
                 Surface(
                     shape = RoundedCornerShape(18.dp),
-                    color = finColors.goldContainer,
-                    border = BorderStroke(1.dp, finColors.gold.copy(alpha = 0.6f)),
+                    color = finColors.skyBlueContainer.copy(alpha = 0.65f),
+                    border = BorderStroke(1.dp, finColors.skyBlue.copy(alpha = 0.5f)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -625,7 +625,7 @@ fun LoanCalculatorScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text("EMI (Reducing on LA+SK)", style = MaterialTheme.typography.labelSmall, color = finColors.gold)
+                            Text("EMI (Reducing on LA+SK)", style = MaterialTheme.typography.labelSmall, color = finColors.skyBlue)
                             Text(
                                 text = formatDoubleMoney(computed.emiReducing, currencyCode),
                                 fontFamily = JetBrainsMonoFamily,
@@ -635,7 +635,7 @@ fun LoanCalculatorScreen(
                             )
                         }
                         Column(horizontalAlignment = Alignment.End) {
-                            Text("In Hand", style = MaterialTheme.typography.labelSmall, color = finColors.gold)
+                            Text("In Hand", style = MaterialTheme.typography.labelSmall, color = finColors.skyBlue)
                             Text(
                                 text = formatDoubleMoney(computed.inHand, currencyCode),
                                 fontFamily = JetBrainsMonoFamily,
@@ -658,21 +658,21 @@ fun LoanCalculatorScreen(
                             onSaveSheet(currentInput) { newId -> activeSheetId = newId }
                         },
                         shape = RoundedCornerShape(14.dp),
-                        border = BorderStroke(1.dp, finColors.gold),
+                        border = BorderStroke(1.dp, finColors.skyBlue),
                         modifier = Modifier
                             .weight(1f)
                             .height(50.dp)
                     ) {
-                        Icon(Icons.Rounded.BookmarkAdd, contentDescription = null, tint = finColors.gold)
+                        Icon(Icons.Rounded.BookmarkAdd, contentDescription = null, tint = finColors.skyBlue)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Save Sheet", color = finColors.gold)
+                        Text("Save Sheet", color = finColors.skyBlue)
                     }
                     Button(
                         onClick = { viewMode = 1 },
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = finColors.gold,
-                            contentColor = Color.Black
+                            containerColor = finColors.skyBlue,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         modifier = Modifier
                             .weight(1.2f)
@@ -686,7 +686,7 @@ fun LoanCalculatorScreen(
                 }
             }
         } else {
-            // --- SHEET VIEW (Exact Order & Gold-on-Black Premium Style) ---
+            // --- SHEET VIEW (Exact Order & Black + SkyBlue + Green/Red Theme) ---
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -696,8 +696,8 @@ fun LoanCalculatorScreen(
                         onClick = { LoanPdfPrinter.printOrSavePdf(context, computed, currencyCode) },
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = finColors.gold,
-                            contentColor = Color.Black
+                            containerColor = finColors.skyBlue,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         modifier = Modifier
                             .weight(1.3f)
@@ -713,14 +713,14 @@ fun LoanCalculatorScreen(
                             onSaveSheet(currentInput) { newId -> activeSheetId = newId }
                         },
                         shape = RoundedCornerShape(14.dp),
-                        border = BorderStroke(1.dp, finColors.gold),
+                        border = BorderStroke(1.dp, finColors.skyBlue),
                         modifier = Modifier
                             .weight(0.9f)
                             .height(48.dp)
                     ) {
-                        Icon(Icons.Rounded.BookmarkAdd, contentDescription = null, tint = finColors.gold, modifier = Modifier.size(18.dp))
+                        Icon(Icons.Rounded.BookmarkAdd, contentDescription = null, tint = finColors.skyBlue, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Save", color = finColors.gold)
+                        Text("Save", color = finColors.skyBlue)
                     }
                 }
             }
@@ -767,8 +767,8 @@ private fun LoanSheetTableCard(
 
     Card(
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF0A0C10)),
-        border = BorderStroke(1.5.dp, finColors.gold.copy(alpha = 0.7f)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, finColors.skyBlue.copy(alpha = 0.45f)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -778,7 +778,7 @@ private fun LoanSheetTableCard(
                     .fillMaxWidth()
                     .background(
                         Brush.horizontalGradient(
-                            listOf(Color(0xFF2B2006), Color(0xFF14171F))
+                            listOf(finColors.heroStart, finColors.heroEnd)
                         )
                     )
                     .padding(16.dp)
@@ -788,27 +788,27 @@ private fun LoanSheetTableCard(
                         text = customerHeader.uppercase(Locale.getDefault()),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = finColors.gold
+                        color = finColors.skyBlue
                     )
                     Text(
                         text = "Scheme: ${sheet.input.scheme.fullName}  •  Date: ${formatDateOnly(sheet.input.disbursementDateMillis)}",
                         style = MaterialTheme.typography.labelMedium,
-                        color = Color(0xFFE2E8F0)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
 
-            HorizontalDivider(color = finColors.gold.copy(alpha = 0.5f))
+            HorizontalDivider(color = finColors.skyBlue.copy(alpha = 0.4f))
 
             // Exact Sheet Row Order
             SheetRow("Loan Amount", formatDoubleMoney(sheet.input.loanAmount, currencyCode), index = 0)
             SheetRow("Loan Insurance (SK)", formatDoubleMoney(sheet.input.loanInsuranceSk, currencyCode), index = 1)
-            SheetRow("Total Loan", formatDoubleMoney(sheet.totalLoan, currencyCode), highlight = finColors.gold, index = 2)
+            SheetRow("Total Loan", formatDoubleMoney(sheet.totalLoan, currencyCode), highlight = finColors.skyBlue, index = 2)
             SheetRow("Loan Amount", formatDoubleMoney(sheet.input.loanAmount, currencyCode), index = 3)
             SheetRow("Bank Charges", formatDoubleMoney(sheet.bankCharges, currencyCode), highlight = finColors.expense, index = 4)
             SheetRow("Disbursment Amount", formatDoubleMoney(sheet.disbursementAmount, currencyCode), highlight = finColors.skyBlue, index = 5)
             SheetRow("NOC Hold", formatDoubleMoney(sheet.nocHold, currencyCode), index = 6)
-            SheetRow("Forclose", formatDoubleMoney(sheet.forcloseAmount, currencyCode), index = 7)
+            SheetRow("Forclose", formatDoubleMoney(sheet.forcloseAmount, currencyCode), highlight = finColors.expense, index = 7)
             SheetRow("Inhand", formatDoubleMoney(sheet.inHand, currencyCode), highlight = finColors.income, index = 8)
             SheetRow("RTO Cash", formatDoubleMoney(sheet.input.rtoCash, currencyCode), index = 9)
 
@@ -816,26 +816,26 @@ private fun LoanSheetTableCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(finColors.goldContainer)
+                    .background(finColors.skyBlueContainer)
                     .padding(horizontal = 14.dp, vertical = 9.dp)
             ) {
                 Text(
                     text = "PAYMENT TERM",
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold,
-                    color = finColors.gold
+                    color = finColors.skyBlue
                 )
             }
-            HorizontalDivider(color = finColors.gold.copy(alpha = 0.35f))
+            HorizontalDivider(color = finColors.skyBlue.copy(alpha = 0.35f))
 
             SheetRow("First Payment by Bank", formatDoubleMoney(sheet.firstPaymentByBank, currencyCode), highlight = finColors.skyBlue, index = 10)
             SheetRow("NOC Hold Payment", formatDoubleMoney(sheet.nocHold, currencyCode), index = 11)
-            SheetRow("Forclose", formatDoubleMoney(sheet.forcloseAmount, currencyCode), index = 12)
+            SheetRow("Forclose", formatDoubleMoney(sheet.forcloseAmount, currencyCode), highlight = finColors.expense, index = 12)
             SheetRow("In Hand", formatDoubleMoney(sheet.inHand, currencyCode), highlight = finColors.income, index = 13)
 
-            HorizontalDivider(color = finColors.gold.copy(alpha = 0.4f))
+            HorizontalDivider(color = finColors.skyBlue.copy(alpha = 0.35f))
 
-            SheetRow("EMI", formatDoubleMoney(sheet.emiReducing, currencyCode), highlight = finColors.gold, index = 14)
+            SheetRow("EMI", formatDoubleMoney(sheet.emiReducing, currencyCode), highlight = finColors.skyBlue, index = 14)
             SheetRow("Month", "${sheet.input.tenureMonths}", index = 15)
             SheetRow("Reducing Rate", LoanCalculatorEngine.formatPercent(sheet.input.reducingRateIt), index = 16)
             SheetRow("Flat Rate", LoanCalculatorEngine.formatPercent(sheet.flatRate), index = 17)
@@ -850,14 +850,14 @@ private fun LoanSheetTableCard(
 
             // Mandatory Disbursement Note
             Surface(
-                color = Color(0xFF141108),
+                color = finColors.skyBlueContainer.copy(alpha = 0.35f),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = stringResource(R.string.disbursement_note),
                     style = MaterialTheme.typography.bodySmall,
                     fontStyle = FontStyle.Italic,
-                    color = finColors.gold,
+                    color = finColors.skyBlue,
                     modifier = Modifier.padding(14.dp)
                 )
             }
@@ -872,7 +872,7 @@ private fun SheetRow(
     highlight: Color? = null,
     index: Int
 ) {
-    val bg = if (index % 2 == 1) Color(0xFF10131B) else Color(0xFF0A0C10)
+    val bg = if (index % 2 == 1) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -885,7 +885,7 @@ private fun SheetRow(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = if (highlight != null) FontWeight.SemiBold else FontWeight.Normal,
-            color = if (highlight != null) Color.White else Color(0xFFCBD5E1)
+            color = if (highlight != null) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = value,
@@ -895,11 +895,11 @@ private fun SheetRow(
             color = highlight ?: Color.White
         )
     }
-    HorizontalDivider(color = Color(0xFF1A202C), thickness = 0.5.dp)
+    HorizontalDivider(color = Color(0xFF18202C), thickness = 0.5.dp)
 }
 
 @Composable
-private fun NumericGoldField(
+private fun NumericLoanField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,

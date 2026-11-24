@@ -96,14 +96,14 @@ object LoanPdfPrinter {
         val pageWidth = 595f
         val contentWidth = pageWidth - margin * 2f
 
-        val bgHeaderPaint = Paint().apply { color = Color.rgb(18, 22, 30) }
-        val goldPaint = Paint().apply {
-            color = Color.rgb(184, 134, 11)
+        val bgHeaderPaint = Paint().apply { color = Color.rgb(6, 24, 38) }
+        val accentPaint = Paint().apply {
+            color = Color.rgb(14, 165, 233)
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             textSize = 14f
         }
         val headerTitlePaint = Paint().apply {
-            color = Color.rgb(245, 196, 81)
+            color = Color.rgb(56, 189, 248)
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             textSize = 16f
         }
@@ -111,7 +111,7 @@ object LoanPdfPrinter {
             color = Color.WHITE
             textSize = 11f
         }
-        val sectionBgPaint = Paint().apply { color = Color.rgb(248, 240, 214) }
+        val sectionBgPaint = Paint().apply { color = Color.rgb(224, 242, 254) }
         val altRowPaint = Paint().apply { color = Color.rgb(247, 249, 252) }
         val borderPaint = Paint().apply {
             color = Color.rgb(203, 213, 225)
@@ -187,7 +187,7 @@ object LoanPdfPrinter {
             if (kind == 2) {
                 canvas.drawRect(margin, y, margin + contentWidth, y + rowH, sectionBgPaint)
                 canvas.drawRect(margin, y, margin + contentWidth, y + rowH, borderPaint)
-                canvas.drawText(label, margin + 10f, y + 15f, goldPaint)
+                canvas.drawText(label, margin + 10f, y + 15f, accentPaint)
             } else {
                 if (idx % 2 == 1) {
                     canvas.drawRect(margin, y, margin + contentWidth, y + rowH, altRowPaint)

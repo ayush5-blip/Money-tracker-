@@ -2,6 +2,7 @@ package com.example.data
 
 import android.content.Context
 import android.util.Base64
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -9,7 +10,10 @@ import com.example.data.local.AppDatabase
 import com.example.data.local.LocalUserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.security.SecureRandom
 import java.util.Locale
@@ -30,6 +34,13 @@ class OfflineAuthRepository(private val context: Context) {
     private val db = AppDatabase.getInstance(context)
     private val userDao = db.localUserDao()
     private val activeUserKey = stringPreferencesKey("active_user_id")
+    private val previewSeededKey = booleanPreferencesKey("preview_account_seeded")
+
+    companion object {
+        const val PREVIEW_USERNAME = "demo@ledger.local"
+        const val PREVIEW_PASSWORD = "1234"
+        private val seedMutex = Mutex()
+    }
 
     val currentUserFlow: Flow<OfflineSessionUser?> = context.sessionDataStore.data.map { prefs ->
         val uid = prefs[activeUserKey] ?: return@map null
@@ -48,6 +59,31 @@ class OfflineAuthRepository(private val context: Context) {
                 username = it.username,
                 displayName = it.displayName
             )
+        }
+    }
+
+    suspend fun ensurePreviewAccountSeeded() = withContext(Dispatchers.IO) {
+        seedMutex.withLock {
+            val prefs = context.sessionDataStore.data.first()
+            if (prefs[previewSeededKey] == true) return@withLock
+
+            if (userDao.findByUsername(PREVIEW_USERNAME) == null) {
+                val salt = ByteArray(16).also { SecureRandom().nextBytes(it) }
+                val hash = hashPassword(PREVIEW_PASSWORD, salt)
+                val saltB64 = Base64.encodeToString(salt, Base64.NO_WRAP)
+                userDao.insertUser(
+                    LocalUserEntity(
+                        userId = "usr_preview_demo",
+                        username = PREVIEW_USERNAME,
+                        usernameLower = PREVIEW_USERNAME,
+                        displayName = "Preview Tester",
+                        passwordHash = hash,
+                        saltBase64 = saltB64,
+                        createdAtMillis = System.currentTimeMillis()
+                    )
+                )
+            }
+            context.sessionDataStore.edit { it[previewSeededKey] = true }
         }
     }
 

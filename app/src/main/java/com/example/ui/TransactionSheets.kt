@@ -322,7 +322,7 @@ fun AddEditTransactionSheet(
                                             text = formatCurrencyCents(calculatedEmiCents, currency),
                                             fontFamily = JetBrainsMonoFamily,
                                             fontWeight = FontWeight.Bold,
-                                            color = finColors.gold
+                                            color = finColors.skyBlue
                                         )
                                     }
                                     TextButton(
