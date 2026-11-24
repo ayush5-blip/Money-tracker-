@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">LedgerPulse</string>
+    <string name="auth_headline">Offline Vault &amp; Loan Sheet</string>
+    <string name="auth_subtitle">Scan bank, debit, and credit SMS alerts, track income &amp; expenses, and generate loan disbursement sheets—100% offline and isolated per account.</string>
+    <string name="nav_overview">Overview</string>
+    <string name="nav_scan">Scan SMS</string>
+    <string name="nav_ledger">Ledger</string>
+    <string name="nav_loan">Loan Sheet</string>
+    <string name="nav_accounts">Cards</string>
+    <string name="sms_permission_rationale">LedgerPulse reads your SMS inbox locally on-device to detect bank, debit, and credit alerts. All records stay offline inside the signed-in user\'s private local vault.</string>
+    <string name="paste_sms_placeholder">Paste one or more bank, debit, or credit SMS alerts here…</string>
+    <string name="empty_ledger_title">No offline transactions yet</string>
+    <string name="empty_ledger_body">Scan your SMS inbox, paste a bank alert message, or log an income, expense, or EMI entry manually.</string>
+    <string name="disbursement_note">Dear Sir, your file will go for disbursement with above mentioned details... OK For Disbursement. AGAR RTO CHALLAN HOGA KO CUSTOMER</string>
+</resources>

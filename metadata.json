@@ -1,0 +1,6 @@
+{
+  "name": "LedgerPulse",
+  "description": "Offline multi-user bank SMS expense and income tracker with EMI tracking and Loan Disbursement Sheet calculator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

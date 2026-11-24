@@ -1,0 +1,117 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidTransaction(data, userId) {
+      return data.userId is string && data.userId == userId &&
+             data.type in ['EXPENSE', 'INCOME'] &&
+             data.instrument in ['DEBIT_CARD', 'CREDIT_CARD', 'BANK_ACCOUNT', 'UPI_WALLET', 'CASH'] &&
+             data.amountCents is int && data.amountCents > 0 && data.amountCents <= 100000000000 &&
+             data.currency is string && data.currency.size() >= 1 && data.currency.size() <= 8 &&
+             data.merchant is string && data.merchant.size() >= 1 && data.merchant.size() <= 120 &&
+             data.category is string && data.category.size() >= 1 && data.category.size() <= 50 &&
+             data.bankName is string && data.bankName.size() <= 60 &&
+             data.accountLast4 is string && data.accountLast4.size() <= 12 &&
+             data.source in ['SMS_INBOX', 'TEXT_PASTE', 'MANUAL'] &&
+             data.messageHash is string && data.messageHash.size() <= 128 &&
+             data.note is string && data.note.size() <= 300 &&
+             data.transactionTimeMillis is int && data.transactionTimeMillis > 0 &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidPreferences(data, userId) {
+      return data.userId is string && data.userId == userId &&
+             data.defaultCurrency is string && data.defaultCurrency.size() >= 1 && data.defaultCurrency.size() <= 8 &&
+             data.monthlyBudgetCents is int && data.monthlyBudgetCents >= 0 && data.monthlyBudgetCents <= 100000000000 &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    match /users/{userId}/transactions/{transactionId} {
+      allow get: if isOwner(userId) && isValidId(transactionId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) &&
+                       isValidId(transactionId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'type', 'instrument', 'amountCents', 'currency',
+                         'merchant', 'category', 'bankName', 'accountLast4',
+                         'source', 'messageHash', 'note', 'transactionTimeMillis',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'type', 'instrument', 'amountCents', 'currency',
+                         'merchant', 'category', 'bankName', 'accountLast4',
+                         'source', 'messageHash', 'note', 'transactionTimeMillis',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidTransaction(incoming(), userId);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(transactionId) &&
+                       isValidTransaction(incoming(), userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().source == existing().source &&
+                       incoming().messageHash == existing().messageHash &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'type', 'instrument', 'amountCents', 'currency',
+                         'merchant', 'category', 'bankName', 'accountLast4',
+                         'note', 'transactionTimeMillis', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(transactionId);
+    }
+
+    match /users/{userId}/settings/{settingId} {
+      allow get: if isOwner(userId) && isValidId(settingId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) &&
+                       isValidId(settingId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'defaultCurrency', 'monthlyBudgetCents', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'defaultCurrency', 'monthlyBudgetCents', 'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidPreferences(incoming(), userId);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(settingId) &&
+                       isValidPreferences(incoming(), userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'defaultCurrency', 'monthlyBudgetCents', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(settingId);
+    }
+  }
+}

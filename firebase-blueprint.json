@@ -1,0 +1,139 @@
+{
+  "entities": {
+    "BankTransaction": {
+      "title": "BankTransaction",
+      "description": "A parsed or manually logged financial transaction (expense or income) linked to a bank, debit, credit, or wallet instrument.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owning user."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["EXPENSE", "INCOME"],
+          "description": "Whether the transaction is an expense (debit) or income (credit)."
+        },
+        "instrument": {
+          "type": "string",
+          "enum": ["DEBIT_CARD", "CREDIT_CARD", "BANK_ACCOUNT", "UPI_WALLET", "CASH"],
+          "description": "Payment instrument detected from the SMS or chosen manually."
+        },
+        "amountCents": {
+          "type": "integer",
+          "description": "Positive transaction amount in minor currency units (e.g., cents/paise)."
+        },
+        "currency": {
+          "type": "string",
+          "description": "ISO currency code such as USD, INR, EUR, GBP."
+        },
+        "merchant": {
+          "type": "string",
+          "description": "Merchant, payee, or sender name."
+        },
+        "category": {
+          "type": "string",
+          "description": "Assigned expense or income category."
+        },
+        "bankName": {
+          "type": "string",
+          "description": "Detected bank or card issuer name."
+        },
+        "accountLast4": {
+          "type": "string",
+          "description": "Last 4 digits of card or bank account, if detected."
+        },
+        "source": {
+          "type": "string",
+          "enum": ["SMS_INBOX", "TEXT_PASTE", "MANUAL"],
+          "description": "Origin of the transaction record."
+        },
+        "messageHash": {
+          "type": "string",
+          "description": "Deterministic SHA-256 hash of source SMS/text for deduplication."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional note or brief parsed summary."
+        },
+        "transactionTimeMillis": {
+          "type": "integer",
+          "description": "Transaction timestamp in Unix epoch milliseconds."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp() on creation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp() on creation and update."
+        }
+      },
+      "required": [
+        "userId",
+        "type",
+        "instrument",
+        "amountCents",
+        "currency",
+        "merchant",
+        "category",
+        "bankName",
+        "accountLast4",
+        "source",
+        "messageHash",
+        "note",
+        "transactionTimeMillis",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserPreferences": {
+      "title": "UserPreferences",
+      "description": "User budget target and display preferences.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owning user."
+        },
+        "defaultCurrency": {
+          "type": "string",
+          "description": "Preferred ISO currency code for manual entry and summaries."
+        },
+        "monthlyBudgetCents": {
+          "type": "integer",
+          "description": "Monthly spending budget in minor currency units (0 means unset)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp() on creation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp() on creation and update."
+        }
+      },
+      "required": [
+        "userId",
+        "defaultCurrency",
+        "monthlyBudgetCents",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/BankTransaction" },
+      "description": "Per-user expense and income transactions parsed from bank SMS or entered manually."
+    },
+    "/users/{userId}/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/UserPreferences" },
+      "description": "Per-user budget and currency preference documents."
+    }
+  }
+}
