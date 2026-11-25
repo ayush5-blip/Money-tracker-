@@ -14,7 +14,7 @@ jobs:
   build:
     name: Build Android APK
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     steps:
       - name: Checkout repository
@@ -27,18 +27,15 @@ jobs:
           java-version: '17'
 
       - name: Set up Android SDK
-         uses: android-actions/setup-android@v4
-          with:
+        uses: android-actions/setup-android@v4
+        with:
           accept-android-sdk-licenses: true
           log-accepted-android-sdk-licenses: false
+          packages: platform-tools
 
-      - name: Accept Android SDK licences
-        run: yes | sdkmanager --licenses
-
-      - name: Install Android SDK packages
+      - name: Install required Android SDK
         run: |
           sdkmanager --install \
-            "platform-tools" \
             "platforms;android-36.1" \
             "build-tools;36.0.0"
 
@@ -47,7 +44,7 @@ jobs:
         with:
           gradle-version: '9.3.1'
 
-      - name: Create debug signing key if missing
+      - name: Create debug signing key
         run: |
           if [ ! -f debug.keystore ]; then
             keytool -genkeypair -v \
